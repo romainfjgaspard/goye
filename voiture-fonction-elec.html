@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Voiture de fonction électrique — 1 000 €/mois</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0b0e14;
+    --surface:  #111520;
+    --card:     #161c2c;
+    --border:   #1e2840;
+    --accent:   #3dffc0;
+    --accent2:  #5b8fff;
+    --warn:     #ffb347;
+    --red:      #ff5b6b;
+    --text:     #e8eaf2;
+    --muted:    #7a85a3;
+    --white:    #ffffff;
+    --radius:   14px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── HERO ──────────────────────────────────────────── */
+  .hero {
+    position: relative;
+    min-height: 92vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 80px 24px 60px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(61,255,192,.10) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(91,143,255,.08) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(61,255,192,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(61,255,192,.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 0%, transparent 100%);
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(61,255,192,.1);
+    border: 1px solid rgba(61,255,192,.25);
+    color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 28px;
+    animation: fadeUp .6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    margin-bottom: 20px;
+    animation: fadeUp .6s .1s ease both;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 1.05rem;
+    max-width: 560px; margin: 0 auto 44px;
+    font-weight: 300;
+    animation: fadeUp .6s .2s ease both;
+  }
+
+  .hero-stats {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+    animation: fadeUp .6s .3s ease both;
+  }
+
+  .hero-stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 24px; text-align: center;
+    min-width: 130px;
+    transition: border-color .25s;
+  }
+  .hero-stat:hover { border-color: var(--accent); }
+  .hero-stat .val { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+  .hero-stat .lbl { font-size: .75rem; color: var(--muted); margin-top: 2px; text-transform: uppercase; letter-spacing: .08em; }
+
+  /* ── SECTION ────────────────────────────────────────── */
+  section { padding: 80px 24px; max-width: 1100px; margin: 0 auto; }
+  section + section { padding-top: 20px; }
+
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800; line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .section-desc {
+    color: var(--muted); font-weight: 300; margin-bottom: 44px;
+    max-width: 580px; font-size: .95rem;
+  }
+
+  /* ── CARDS GRID ─────────────────────────────────────── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 20px; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color .25s, transform .25s;
+    position: relative;
+  }
+  .card:hover { border-color: var(--accent2); transform: translateY(-3px); }
+  .card.top-pick { border-color: rgba(61,255,192,.35); }
+
+  .card-badge {
+    position: absolute; top: 14px; right: 14px; z-index: 2;
+    background: var(--accent);
+    color: #000; font-family: 'Syne', sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 100px;
+  }
+
+  .card-img {
+    width: 100%; height: 180px; object-fit: cover;
+    display: block;
+    background: var(--surface);
+  }
+
+  .card-img-placeholder {
+    width: 100%; height: 180px;
+    background: linear-gradient(135deg, var(--surface), var(--border));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+  }
+
+  .card-body { padding: 20px 22px 22px; }
+
+  .card-brand {
+    font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 4px;
+  }
+
+  .card-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    margin-bottom: 14px; line-height: 1.2;
+  }
+
+  .card-specs {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
+  }
+
+  .spec-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 4px 12px; font-size: .78rem; color: var(--muted);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .spec-pill.highlight { border-color: rgba(61,255,192,.3); color: var(--accent); }
+  .spec-pill.warn { border-color: rgba(255,179,71,.3); color: var(--warn); }
+
+  .card-desc { font-size: .88rem; color: var(--muted); margin-bottom: 18px; line-height: 1.55; }
+
+  .card-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.35rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .card-price span { font-size: .75rem; font-weight: 400; color: var(--muted); -webkit-text-fill-color: var(--muted); margin-left: 4px; }
+
+  /* ── AUTONOMY BAR ──────────────────────────────────── */
+  .range-bar-wrap { margin-top: 12px; }
+  .range-bar-labels { display: flex; justify-content: space-between; font-size: .75rem; color: var(--muted); margin-bottom: 4px; }
+  .range-bar-track {
+    height: 6px; background: var(--border); border-radius: 100px; overflow: hidden;
+  }
+  .range-bar-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    transition: width 1s ease;
+  }
+
+  /* ── COMPARISON TABLE ──────────────────────────────── */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  thead th {
+    background: var(--surface);
+    padding: 14px 16px;
+    text-align: left;
+    font-family: 'Syne', sans-serif; font-size: .78rem;
+    font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,.02); }
+  tbody td { padding: 13px 16px; vertical-align: middle; }
+  .td-name { font-weight: 500; }
+  .td-range {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    color: var(--accent); white-space: nowrap;
+  }
+  .td-real { color: var(--muted); font-size: .83rem; }
+  .td-charge { color: var(--accent2); }
+  .td-price { font-family: 'Syne', sans-serif; font-weight: 700; white-space: nowrap; }
+  .td-places { text-align: center; }
+  .star { color: var(--accent); }
+  .row-top { background: rgba(61,255,192,.035) !important; }
+
+  /* ── ADVICE BLOCKS ─────────────────────────────────── */
+  .advice-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .advice-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px;
+    display: flex; gap: 16px; align-items: flex-start;
+    transition: border-color .25s;
+  }
+  .advice-card:hover { border-color: var(--accent2); }
+  .advice-icon {
+    width: 42px; height: 42px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.25rem;
+  }
+  .advice-icon.green { background: rgba(61,255,192,.12); }
+  .advice-icon.blue  { background: rgba(91,143,255,.12); }
+  .advice-icon.warn  { background: rgba(255,179,71,.12); }
+  .advice-icon.red   { background: rgba(255,91,107,.12); }
+  .advice-title { font-family: 'Syne', sans-serif; font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+  .advice-text  { font-size: .84rem; color: var(--muted); line-height: 1.55; }
+
+  /* ── FOOTER ────────────────────────────────────────── */
+  footer {
+    text-align: center; padding: 48px 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: .82rem;
+  }
+  footer strong { color: var(--accent); font-family: 'Syne', sans-serif; }
+
+  /* ── ANIMATIONS ────────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── NAV ───────────────────────────────────────────── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(11,14,20,.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 32px; gap: 20px; flex-wrap: wrap;
+  }
+  .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: .95rem; }
+  .nav-brand em { color: var(--accent); font-style: normal; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: .85rem;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .hero h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">⚡ <em>VF</em> Électrique</div>
+  <div class="nav-links">
+    <a href="#breaks">Breaks</a>
+    <a href="#suv">SUV</a>
+    <a href="#vans">Vans</a>
+    <a href="#comparatif">Comparatif</a>
+    <a href="#conseils">Conseils</a>
+    <a href="#ariege">Ariège 🦲</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Voiture de fonction 2025</div>
+    <h1>Le guide <em>électrique</em><br>pour grands trajets</h1>
+    <p class="hero-sub">Budget 1 000 €/mois en leasing · Familiale ou van · Autonomie réelle prioritaire</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="val">1 000 €</div><div class="lbl">Budget/mois</div></div>
+      <div class="hero-stat"><div class="val">500+ km</div><div class="lbl">Autonomie cible WLTP</div></div>
+      <div class="hero-stat"><div class="val">8</div><div class="lbl">Modèles sélectionnés</div></div>
+      <div class="hero-stat"><div class="val">270 kW</div><div class="lbl">Charge rapide max</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BREAKS / BERLINES ÉLECTRIQUES -->
+<section id="breaks">
+  <p class="section-label reveal">Breaks & Berlines</p>
+  <h2 class="section-title reveal">Aérodynamiques &amp; endurants</h2>
+  <p class="section-desc reveal">Les berlines et breaks électriques dominent les classements d'autonomie grâce à leur Cx optimisé. Le top absolu en conditions autoroutières réelles.</p>
+
+  <div class="cards">
+
+    <div class="card top-pick reveal">
+      <div class="card-badge">⭐ N°1 autonomie autoroute</div>
+      <img class="card-img" src="https://www.carscoops.com/wp-content/uploads/watermarked/2024/07/Audi-A6-Avant-e-tron-0b.jpg" alt="Audi A6 Avant e-tron 2024" onerror="this.style.display='none';this.nextElementSibling&&(this.nextElementSibling.style.display='flex')"><div class="card-img-placeholder" style="display:none">🏆</div>
+      <div class="card-body">
+        <div class="card-brand">Audi</div>
+        <div class="card-name">A6 Avant e-tron Performance</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 713 km WLTP</span>
+          <span class="spec-pill highlight">441 km autoroute réel</span>
+          <span class="spec-pill">94,9 kWh</span>
+          <span class="spec-pill">270 kW charge</span>
+          <span class="spec-pill">Cx 0,24</span>
+        </div>
+        <p class="card-desc">Vainqueur du test ADAC en conditions hivernales à 130 km/h. Seule voiture familiale électrique à tenir 441 km réels sur autoroute froide avec une seule charge. Disponible en version Avant (break) — idéal famille.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>441 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:88%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~950–1 000 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://hips.hearstapps.com/hmg-prod/images/2023-tesla-model-s-101-64d0e15a19dce.jpg" alt="Tesla Model S" onerror="this.style.display='none'"><div class="card-img-placeholder" style="display:none">🚗</div>
+      <div class="card-body">
+        <div class="card-brand">Tesla</div>
+        <div class="card-name">Model S Grande Autonomie</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 652–744 km WLTP</span>
+          <span class="spec-pill highlight">~400 km autoroute</span>
+          <span class="spec-pill">100 kWh</span>
+          <span class="spec-pill">Superchargeur V3</span>
+        </div>
+        <p class="card-desc">Référence historique en autonomie. Réseau Superchargeur imbattable pour les longs trajets en France. Moins familiale qu'un break mais coffre acceptable.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~400 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:80%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~980 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://www.carscoops.com/wp-content/uploads/watermarked/2023/08/Volkswagen-ID.7-Tourer-4e.jpg" alt="Volkswagen ID.7 Tourer" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">🚙</div>
+      <div class="card-body">
+        <div class="card-brand">Volkswagen</div>
+        <div class="card-name">ID.7 Pro S Tourer</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 702 km WLTP</span>
+          <span class="spec-pill highlight">~430 km autoroute</span>
+          <span class="spec-pill">91 kWh</span>
+          <span class="spec-pill">200 kW charge</span>
+          <span class="spec-pill">Coffre 605 L</span>
+        </div>
+        <p class="card-desc">Version break (Tourer) ultra-pratique. Excellente autonomie WLTP, prix plus accessible que l'Audi. Idéale pour une famille avec beaucoup de bagages.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~430 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:86%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~850–920 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Hyundai_Ioniq_6_1X7A7258.jpg" alt="Hyundai Ioniq 6" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">🔷</div>
+      <div class="card-body">
+        <div class="card-brand">Hyundai</div>
+        <div class="card-name">Ioniq 6 Grande Autonomie</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 614 km WLTP</span>
+          <span class="spec-pill highlight">~390 km autoroute</span>
+          <span class="spec-pill">77,4 kWh</span>
+          <span class="spec-pill">240 kW charge</span>
+          <span class="spec-pill warn">Cx 0,21 record</span>
+        </div>
+        <p class="card-desc">Cx de 0,21 — le coefficient de traînée le plus bas du marché. Très efficace à haute vitesse. Plus compacte que les autres, mais intérieur bien pensé.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~390 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:78%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~750–850 € <span>/mois</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SUV -->
+<section id="suv">
+  <p class="section-label reveal">SUV Électriques</p>
+  <h2 class="section-title reveal">Espace &amp; polyvalence</h2>
+  <p class="section-desc reveal">Pour les familles qui veulent la garde au sol, le volume et idéalement 7 places.</p>
+
+  <div class="cards">
+
+    <div class="card top-pick reveal">
+      <div class="card-badge">Meilleur rapport</div>
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/2025_Tesla_Model_Y_RWD_front.jpg" alt="Tesla Model Y" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">🚙</div>
+      <div class="card-body">
+        <div class="card-brand">Tesla</div>
+        <div class="card-name">Model Y Grande Autonomie AWD</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 533–600 km WLTP</span>
+          <span class="spec-pill highlight">~400 km autoroute</span>
+          <span class="spec-pill">74 kWh</span>
+          <span class="spec-pill">250 kW charge</span>
+          <span class="spec-pill">Superchargeur</span>
+        </div>
+        <p class="card-desc">Meilleur vendeur EV en Europe. Réseau Superchargeur exceptionnel : 20 min pour +200 km. Efficience remarquable (22,2 kWh/100 km). Budget qui reste bien dans l'enveloppe.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~400 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:80%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~820–900 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Kia_EV9_GT-Line_1X7A2506.jpg" alt="Kia EV9" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">🟢</div>
+      <div class="card-body">
+        <div class="card-brand">Kia</div>
+        <div class="card-name">EV9 GT-Line AWD</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 608 km WLTP</span>
+          <span class="spec-pill highlight">~360 km autoroute</span>
+          <span class="spec-pill warn">7 places réelles</span>
+          <span class="spec-pill">99,8 kWh</span>
+          <span class="spec-pill">240 kW charge</span>
+        </div>
+        <p class="card-desc">7 places fonctionnelles en SUV électrique — rare. Grande batterie pour une autonomie rassurante. Le meilleur choix si la famille est grande.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~360 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:72%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~880–960 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Peugeot_e-3008_Automesse_Ludwigsburg_2024_IMG_1367.jpg" alt="Peugeot e-3008" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">⭐</div>
+      <div class="card-body">
+        <div class="card-brand">Peugeot</div>
+        <div class="card-name">e-3008 Long Range</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 700 km WLTP</span>
+          <span class="spec-pill highlight">~420 km autoroute</span>
+          <span class="spec-pill">98 kWh</span>
+          <span class="spec-pill">160 kW charge</span>
+          <span class="spec-pill">i-Cockpit</span>
+        </div>
+        <p class="card-desc">Surprise française. Autonomie WLTP exceptionnelle pour un SUV, design intérieur spectaculaire. Charge un peu moins rapide que la concurrence allemande.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~420 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:84%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~820–920 € <span>/mois</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- VANS -->
+<section id="vans">
+  <p class="section-label reveal">Vans électriques</p>
+  <h2 class="section-title reveal">Le format max</h2>
+  <p class="section-desc reveal">Pour les grandes familles ou les amateurs d'espace. L'offre électrique reste limitée mais s'étoffe.</p>
+
+  <div class="cards">
+
+    <div class="card top-pick reveal">
+      <div class="card-badge">Meilleur van élec.</div>
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/2025_Volkswagen_ID.Buzz_1st_Edition_4MOTION_in_Candy_White_%26_Pomelo_Yellow_Metallic_two-tone,_front_left,_2025-03-14.jpg" alt="Volkswagen ID. Buzz LWB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">🚐</div>
+      <div class="card-body">
+        <div class="card-brand">Volkswagen</div>
+        <div class="card-name">ID. Buzz LWB (version longue)</div>
+        <div class="card-specs">
+          <span class="spec-pill highlight">⚡ 469 km WLTP</span>
+          <span class="spec-pill warn">7 places</span>
+          <span class="spec-pill">79 kWh</span>
+          <span class="spec-pill">200 kW charge</span>
+          <span class="spec-pill">Design iconique</span>
+        </div>
+        <p class="card-desc">Le van électrique familial le plus abouti du marché. 7 places réelles, style rétro-moderne, conduite voiture. Autonomie suffisante pour les longs week-ends si on accepte une recharge.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~300 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:60%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~900–980 € <span>/mois</span></div>
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <img class="card-img" src="https://en.wikipedia.org/wiki/Special:FilePath/Mercedes-Benz_EQV_300_Design-Paket_Lang_(V_447,_2._Facelift)_%E2%80%93_f_15062025.jpg" alt="Mercedes-Benz EQV 300" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="card-img-placeholder" style="display:none">📦</div>
+      <div class="card-body">
+        <div class="card-brand">Mercedes-Benz</div>
+        <div class="card-name">EQV 300</div>
+        <div class="card-specs">
+          <span class="spec-pill">⚡ 360 km WLTP</span>
+          <span class="spec-pill warn">7–8 places</span>
+          <span class="spec-pill">90 kWh</span>
+          <span class="spec-pill">110 kW charge</span>
+          <span class="spec-pill">Finition V-Class</span>
+        </div>
+        <p class="card-desc">La version électrique du V-Class. Habitacle très premium, 8 places réelles. Autonomie plus limitée et charge moins rapide — à réserver aux trajets urbains/péri-urbains fréquents.</p>
+        <div class="range-bar-wrap">
+          <div class="range-bar-labels"><span>Autonomie réelle autoroute</span><span>~220 km</span></div>
+          <div class="range-bar-track"><div class="range-bar-fill" style="width:44%"></div></div>
+        </div>
+        <br>
+        <div class="card-price">~950–1 000 € <span>/mois</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMPARATIF TABLE -->
+<section id="comparatif">
+  <p class="section-label reveal">Comparatif</p>
+  <h2 class="section-title reveal">Tous les modèles face à face</h2>
+  <p class="section-desc reveal">Classés par autonomie réelle estimée sur autoroute. La colonne clé pour les grands trajets.</p>
+
+  <div class="table-wrap reveal">
+    <table>
+      <thead>
+        <tr>
+          <th>Modèle</th>
+          <th>Type</th>
+          <th>WLTP</th>
+          <th>Réelle autoroute ↓</th>
+          <th>Charge max</th>
+          <th>Places</th>
+          <th>Loyer est.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-top">
+          <td class="td-name">🏆 Audi A6 Avant e-tron Perf.</td>
+          <td>Break élec.</td>
+          <td class="td-range">713 km</td>
+          <td class="td-range">441 km <span class="star">★</span></td>
+          <td class="td-charge">270 kW</td>
+          <td class="td-places">5</td>
+          <td class="td-price">~960 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">VW ID.7 Pro S Tourer</td>
+          <td>Break élec.</td>
+          <td class="td-range">702 km</td>
+          <td class="td-range">~430 km</td>
+          <td class="td-charge">200 kW</td>
+          <td class="td-places">5</td>
+          <td class="td-price">~880 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Peugeot e-3008 Long Range</td>
+          <td>SUV</td>
+          <td class="td-range">700 km</td>
+          <td class="td-range">~420 km</td>
+          <td class="td-charge">160 kW</td>
+          <td class="td-places">5</td>
+          <td class="td-price">~870 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Tesla Model S Grande Auto.</td>
+          <td>Berline</td>
+          <td class="td-range">652 km</td>
+          <td class="td-range">~400 km</td>
+          <td class="td-charge">250 kW</td>
+          <td class="td-places">5</td>
+          <td class="td-price">~980 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Tesla Model Y Grande Auto.</td>
+          <td>SUV</td>
+          <td class="td-range">600 km</td>
+          <td class="td-range">~400 km</td>
+          <td class="td-charge">250 kW</td>
+          <td class="td-places">5 (+opt. 7)</td>
+          <td class="td-price">~860 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Hyundai Ioniq 6 GA</td>
+          <td>Berline</td>
+          <td class="td-range">614 km</td>
+          <td class="td-range">~390 km</td>
+          <td class="td-charge">240 kW</td>
+          <td class="td-places">5</td>
+          <td class="td-price">~800 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Kia EV9 GT-Line AWD</td>
+          <td>SUV 7 pl.</td>
+          <td class="td-range">608 km</td>
+          <td class="td-range">~360 km</td>
+          <td class="td-charge">240 kW</td>
+          <td class="td-places">7</td>
+          <td class="td-price">~920 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">VW ID. Buzz LWB</td>
+          <td>Van</td>
+          <td class="td-range">469 km</td>
+          <td class="td-range">~300 km</td>
+          <td class="td-charge">200 kW</td>
+          <td class="td-places">7</td>
+          <td class="td-price">~940 €</td>
+        </tr>
+        <tr>
+          <td class="td-name">Mercedes EQV 300</td>
+          <td>Van</td>
+          <td class="td-range">360 km</td>
+          <td class="td-range">~220 km</td>
+          <td class="td-charge">110 kW</td>
+          <td class="td-places">8</td>
+          <td class="td-price">~970 €</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:12px; font-size:.8rem; color:var(--muted);">* Autonomie réelle estimée à 130 km/h en conditions tempérées. En hiver, retirer 15–25% supplémentaires.</p>
+</section>
+
+<!-- CONSEILS -->
+<section id="conseils">
+  <p class="section-label reveal">Conseils pratiques</p>
+  <h2 class="section-title reveal">Ce qu'il faut savoir avant de choisir</h2>
+  <p class="section-desc reveal">L'électrique en voiture de fonction : les points à ne pas rater.</p>
+
+  <div class="advice-grid">
+    <div class="advice-card reveal">
+      <div class="advice-icon green">💡</div>
+      <div>
+        <div class="advice-title">Avantage en nature réduit</div>
+        <div class="advice-text">Les véhicules 100% électriques bénéficient d'un coefficient d'avantage en nature réduit à 1% (vs 9–11% pour un thermique). Sur une voiture à 70 000 €, ça représente une économie de charge fiscale significative pour le salarié.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon blue">🔋</div>
+      <div>
+        <div class="advice-title">Règle des 30% WLTP</div>
+        <div class="advice-text">Prendre 70–75% de l'autonomie WLTP comme référence sur autoroute en été, et 55–60% en hiver. Un modèle à 700 km WLTP donne ~490 km été, ~400 km hiver. Viser 500+ km WLTP pour sereinité sur grands trajets.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon green">⚡</div>
+      <div>
+        <div class="advice-title">Charge rapide : 250–270 kW minimum</div>
+        <div class="advice-text">Prioriser les modèles avec 200 kW+ de charge DC. En pratique : 20 minutes sur une borne Ionity ou Superchargeur = +200 à 250 km d'autonomie. L'A6 e-tron (270 kW) et la Model Y (250 kW) sont au top.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon warn">🗺️</div>
+      <div>
+        <div class="advice-title">Réseau Superchargeur Tesla</div>
+        <div class="advice-text">Si les longs trajets sont fréquents, l'accès au réseau Superchargeur de Tesla (Model S, Y) est un avantage concret : bornes fiables, planification intégrée dans le GPS, pas besoin de carte externe.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon blue">🏠</div>
+      <div>
+        <div class="advice-title">Borne à domicile ou au bureau</div>
+        <div class="advice-text">L'entreprise peut financer une wallbox domicile. L'électricité rechargée chez soi pour usage professionnel est remboursable. À négocier dans le package voiture de fonction.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon red">⚠️</div>
+      <div>
+        <div class="advice-title">Vans : limites en autonomie</div>
+        <div class="advice-text">L'ID. Buzz et l'EQV ont des autonomies autoroutières réelles entre 200 et 320 km — nécessite donc 1 à 2 recharges sur Paris-Lyon. Acceptable si trajet planifié, mais moins confortable qu'un break élec. pour les grands voyages.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VERDICT -->
+<section>
+  <div style="background: var(--card); border: 1px solid rgba(61,255,192,.25); border-radius: 18px; padding: 40px 36px; max-width: 760px; margin: 0 auto;" class="reveal">
+    <p class="section-label" style="margin-bottom: 14px;">Verdict</p>
+    <h2 style="font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 18px;">Notre recommandation selon le profil</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <span style="font-size: 1.4rem; flex-shrink: 0;">🏆</span>
+        <div>
+          <strong style="color: var(--accent);">Autonomie max & grands trajets fréquents</strong><br>
+          <span style="color: var(--muted); font-size: .9rem;"><strong style="color: var(--text);">Audi A6 Avant e-tron Performance</strong> — numéro 1 absolu en autonomie réelle autoroute selon les tests ADAC. Le break en prime.</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <span style="font-size: 1.4rem; flex-shrink: 0;">⚡</span>
+        <div>
+          <strong style="color: var(--accent2);">Meilleur réseau de charge + rapport qualité</strong><br>
+          <span style="color: var(--muted); font-size: .9rem;"><strong style="color: var(--text);">Tesla Model Y Grande Autonomie</strong> — Superchargeur partout en France, budget plus souple, efficience imbattable.</span>
+        </div>
+      </div>
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <span style="font-size: 1.4rem; flex-shrink: 0;">👨‍👩‍👧‍👦</span>
+        <div>
+          <strong style="color: var(--warn);">Famille nombreuse (7 places impérative)</strong><br>
+          <span style="color: var(--muted); font-size: .9rem;"><strong style="color: var(--text);">Kia EV9</strong> pour l'autonomie + 7 places, ou <strong style="color: var(--text);">VW ID. Buzz LWB</strong> si le style et le format van sont prioritaires.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLAGUES ARIÈGE -->
+<section id="ariege">
+  <p class="section-label reveal">Section spéciale</p>
+  <h2 class="section-title reveal">Guide pour un chauve ariégeois 🤾🦲</h2>
+  <p class="section-desc reveal">Profil atypique : domicilié entre Foix et les étoiles, aficionado de handball, plus fort qu'un hippopotame <em>et</em> que Spiderman. Voici les arguments techniques adaptés.</p>
+
+  <div class="advice-grid">
+    <div class="advice-card reveal">
+      <div class="advice-icon green">☀️</div>
+      <div>
+        <div class="advice-title">Toit pano pour bronzer le crâne</div>
+        <div class="advice-text">L'Audi A6 Avant e-tron propose un toit panoramique en option — parfait pour bronzer le crâne ariégeois entre Foix et Toulouse. Cx 0,24 : même le vent ne peut pas y faire pousser des cheveux. Résultat garanti à chaque trajet.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon blue">🤾</div>
+      <div>
+        <div class="advice-title">Coffre calibré hand-ball</div>
+        <div class="advice-text">VW ID.7 Tourer : 605 litres. Assez pour le sac de hand, les 6 plots, la gourde de 3 litres, les genouillères renforcées (format spécifique plus-fort-qu'un-hippo) et encore la place pour ramener du Bethmale des Couserans. Calculé au litre près.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon warn">⛰️</div>
+      <div>
+        <div class="advice-title">L'Ariège des bornes rares</div>
+        <div class="advice-text">En Ariège, les bornes de recharge rapide sont aussi rares que les coiffeurs. L'Audi A6 e-tron (441 km réels à 130 km/h) est le seul modèle capable de relier Foix à Paris sans recharge, sans cheveux et sans anxiété. Les autres devront prier saint Lizier.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon red">🦛</div>
+      <div>
+        <div class="advice-title">Plus costaud qu'un hippopotame</div>
+        <div class="advice-text">Un hippopotame pèse 2 000 à 3 000 kg et mord à 2 000 N·m de couple. Le Kia EV9 pèse 2 585 kg et développe 700 N·m. Vous êtes quelque part entre les deux. À 7 places, toute l'équipe de hand rentre dedans — si elle accepte de voyager avec vous.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon blue">🕷️</div>
+      <div>
+        <div class="advice-title">Plus fort que Spiderman</div>
+        <div class="advice-text">Spiderman grimpe sur les murs. La Tesla Model Y ne grimpe pas sur les murs, mais son Autopilot gère presque tout le reste. Vous, vous pouvez la soulever à mains nues. Avantage technique : vous, légèrement. Lui n'a pas à payer 900 €/mois de leasing.</div>
+      </div>
+    </div>
+
+    <div class="advice-card reveal">
+      <div class="advice-icon green">🏆</div>
+      <div>
+        <div class="advice-title">Verdict ariégeois final</div>
+        <div class="advice-text"><strong style="color:var(--accent)">Audi A6 Avant e-tron Performance</strong> — toit pano pour le crâne, coffre break pour le hand, 441 km sans borne dans les Pyrénées. Si quelqu'un remet ce choix en question, vous le soulevez poliment et lui expliquez les vertus du Cx 0,24.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Guide réalisé en avril 2025 · Sources : ADAC, WLTP constructeurs, L'argus, Beev · <strong>Les loyers sont des estimations — vérifier avec les concessionnaires.</strong></p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate range bars when visible
+  const bars = document.querySelectorAll('.range-bar-fill');
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const target = e.target.style.width;
+        e.target.style.width = '0';
+        setTimeout(() => e.target.style.width = target, 200);
+        barObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  bars.forEach(b => barObserver.observe(b));
+</script>
+</body>
+</html>
